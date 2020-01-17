@@ -3,7 +3,7 @@ import cv2
 import time
 import argparse
 import torch
-import numpy as np
+import json
 
 from detector import build_detector
 from deep_sort import build_tracker
@@ -37,7 +37,7 @@ class VideoTracker(object):
 
         if self.args.save_path:
             fourcc =  cv2.VideoWriter_fourcc(*'MJPG')
-            self.writer = cv2.VideoWriter(self.args.save_path, fourcc, 20, (self.im_width,self.im_height))
+            self.writer = cv2.VideoWriter(self.args.save_path, fourcc, 25, (self.im_width,self.im_height))
 
         assert self.vdo.isOpened()
         return self
@@ -50,8 +50,19 @@ class VideoTracker(object):
 
     def run(self):
         idx_frame = 0
+        global_frames = []
+
         while self.vdo.grab(): 
             idx_frame += 1
+
+            if idx_frame > (25 * 30):
+                break
+
+            frame = {"timestamp": int(idx_frame),
+                     "num": int(idx_frame),
+                     "class": "frame"}
+            hypotheses = []
+
             if idx_frame % self.args.frame_interval:
                 continue
 
@@ -63,7 +74,7 @@ class VideoTracker(object):
             bbox_xywh, cls_conf, cls_ids = self.detector(im)
             if bbox_xywh is not None:
                 # select person class
-                mask = cls_ids==0
+                mask = cls_ids == 0
 
                 bbox_xywh = bbox_xywh[mask]
                 bbox_xywh[:,3:] *= 1.2 # bbox dilation just in case bbox too small
@@ -71,6 +82,16 @@ class VideoTracker(object):
 
                 # do tracking
                 outputs = self.deepsort.update(bbox_xywh, cls_conf, im)
+
+                for out in outputs:
+                    x = int(out[0])
+                    w = int(out[2]) - int(out[0])
+                    y = int(out[1])
+                    h = int(out[3]) - int(out[1])
+                    hypotheses.append({"x": x, "y": y, "width": w, "height": h, "id": int(out[4])})
+                frame.update({"hypotheses": hypotheses})
+
+                global_frames.append(frame)
 
                 # draw boxes for visualization
                 if len(outputs) > 0:
@@ -87,7 +108,15 @@ class VideoTracker(object):
 
             if self.args.save_path:
                 self.writer.write(ori_im)
-            
+
+        global_hypotheses = [{"filename": self.args.VIDEO_PATH, "class": "video", "frames": global_frames}]
+
+        print("Writing json...")
+        _path = "./demo/predictions.json"
+        if _path != "":
+            with open("{0}".format(_path), 'w') as _f:
+                json.dump(global_hypotheses, _f, indent=4)
+                _f.write(os.linesep)
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -98,7 +127,7 @@ def parse_args():
     parser.add_argument("--frame_interval", type=int, default=1)
     parser.add_argument("--display_width", type=int, default=800)
     parser.add_argument("--display_height", type=int, default=600)
-    parser.add_argument("--save_path", type=str, default="./demo/demo.avi")
+    parser.add_argument("--save_path", type=str, default="./demo/demo-2.avi")
     parser.add_argument("--cpu", dest="use_cuda", action="store_false", default=True)
     return parser.parse_args()
 
