@@ -1,0 +1,8 @@
+MOT Results:
+
+Hockey 5 mins. Yolo3 using the yolov3_deepsort.py implementation.
+
+acc         748  0.636252  227.407214
+      IDF1   IDP   IDR  Rcll  Prcn GT MT PT ML   FP   FN IDs   FM  MOTA    MOTP
+full 45.1% 51.8% 39.9% 70.8% 91.8% 25 12 11  2 1179 5451 163  376 63.6% 227.407
+part 83.1% 94.9% 74.0% 74.0% 94.9% 25 18  1  6    2   13   0    0 70.0% 175.162
