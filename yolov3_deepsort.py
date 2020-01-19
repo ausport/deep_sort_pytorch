@@ -52,10 +52,12 @@ class VideoTracker(object):
         idx_frame = 0
         global_frames = []
 
+        print("Short test: {0}".format(self.args.short))
+
         while self.vdo.grab(): 
             idx_frame += 1
 
-            if idx_frame > (25 * 30):
+            if self.args.short and idx_frame > (25 * 30):
                 break
 
             frame = {"timestamp": int(idx_frame),
@@ -124,6 +126,7 @@ def parse_args():
     parser.add_argument("--config_detection", type=str, default="./configs/yolov3.yaml")
     parser.add_argument("--config_deepsort", type=str, default="./configs/deep_sort.yaml")
     parser.add_argument("--ignore_display", dest="display", action="store_false", default=True)
+    parser.add_argument("--short_test", dest="short", action="store_true", default=False)
     parser.add_argument("--frame_interval", type=int, default=1)
     parser.add_argument("--display_width", type=int, default=800)
     parser.add_argument("--display_height", type=int, default=600)
