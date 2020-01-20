@@ -114,7 +114,7 @@ class VideoTracker(object):
         global_hypotheses = [{"filename": self.args.VIDEO_PATH, "class": "video", "frames": global_frames}]
 
         print("Writing json...")
-        _path = "./demo/predictions.json"
+        _path = "./demo/netball_predictions.json"
         if _path != "":
             with open("{0}".format(_path), 'w') as _f:
                 json.dump(global_hypotheses, _f, indent=4)
@@ -130,7 +130,7 @@ def parse_args():
     parser.add_argument("--frame_interval", type=int, default=1)
     parser.add_argument("--display_width", type=int, default=800)
     parser.add_argument("--display_height", type=int, default=600)
-    parser.add_argument("--save_path", type=str, default="./demo/demo-2.avi")
+    parser.add_argument("--save_path", type=str, default="./demo/demo-3.avi")
     parser.add_argument("--cpu", dest="use_cuda", action="store_false", default=True)
     return parser.parse_args()
 
