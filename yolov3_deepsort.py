@@ -5,7 +5,8 @@ import argparse
 import torch
 import json
 
-from detector import build_detector
+from detector import build_detector, build_sport_detector
+
 from deep_sort import build_tracker
 from utils.draw import draw_boxes
 from utils.parser import get_config
@@ -24,7 +25,9 @@ class VideoTracker(object):
             cv2.resizeWindow("test", args.display_width, args.display_height)
 
         self.vdo = cv2.VideoCapture()
-        self.detector = build_detector(cfg, use_cuda=use_cuda)
+        # self.detector = build_detector(cfg, use_cuda=use_cuda)
+        self.detector = build_sport_detector(cfg, use_cuda=use_cuda)
+
         self.deepsort = build_tracker(cfg, use_cuda=use_cuda)
         self.class_names = self.detector.class_names
 
