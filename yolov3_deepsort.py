@@ -5,7 +5,7 @@ import argparse
 import torch
 import json
 
-from detector import build_detector, build_sport_detector
+from detector import build_sport_detector
 
 from deep_sort import build_tracker
 from utils.draw import draw_boxes
