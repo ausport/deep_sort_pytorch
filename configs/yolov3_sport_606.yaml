@@ -1,6 +1,6 @@
 YOLOV3:
-  CFG: "./detector/YOLOv3/cfg/yolov3-sport-606.cfg"
-  WEIGHT: "./detector/YOLOv3/weight/yolov3_sport_606.weights"
+  CFG: "./detector/YOLOv3_Sport/config/yolov3-custom.cfg"
+  WEIGHT: "./detector/YOLOv3_Sport/weights/yolov3_sport_606.weights"
   CLASS_NAMES: "./detector/YOLOv3/cfg/sport.names"
 
   SCORE_THRESH: 0.5
