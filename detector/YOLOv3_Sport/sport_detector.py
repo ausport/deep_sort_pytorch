@@ -25,7 +25,7 @@ def xyxy_to_xywh(boxes_xyxy):
 	return boxes_xywh
 
 class YOLOv3_4_SPORT(object):
-	def __init__(self, cfgfile, weightfile, namesfile, score_thresh=0.7, conf_thresh=0.01, nms_thresh=0.45,
+	def __init__(self, cfgfile, weightfile, namesfile, score_thresh=0.7, conf_thresh=0.95, nms_thresh=0.45,
 	             is_xywh=False, use_cuda=True):
 
 		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
