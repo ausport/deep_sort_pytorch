@@ -141,7 +141,8 @@ def parse_args():
     parser.add_argument("--frame_interval", type=int, default=1)
     parser.add_argument("--display_width", type=int, default=800)
     parser.add_argument("--display_height", type=int, default=600)
-    parser.add_argument("--save_path", type=str, default="./demo/demo-3.avi")
+    # parser.add_argument("--save_path", type=str, default="./demo/demo-3.avi")
+    parser.add_argument("--save_path", type=str, default=None)
     parser.add_argument("--cpu", dest="use_cuda", action="store_false", default=True)
     return parser.parse_args()
 
