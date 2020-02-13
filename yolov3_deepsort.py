@@ -5,7 +5,7 @@ import argparse
 import torch
 import json
 
-from detector import build_sport_detector
+from detector import build_sport_detector, build_detector
 
 from deep_sort import build_tracker
 from utils.draw import draw_boxes
@@ -25,8 +25,12 @@ class VideoTracker(object):
             cv2.resizeWindow("test", args.display_width, args.display_height)
 
         self.vdo = cv2.VideoCapture()
-        # self.detector = build_detector(cfg, use_cuda=use_cuda)
-        self.detector = build_sport_detector(cfg, use_cuda=use_cuda)
+
+        if args.use_sport_detector:
+            self.detector = build_sport_detector(cfg, use_cuda=use_cuda)
+        else:
+            self.detector = build_detector(cfg, use_cuda=use_cuda)
+
 
         self.deepsort = build_tracker(cfg, use_cuda=use_cuda)
         self.class_names = self.detector.class_names
@@ -133,6 +137,7 @@ def parse_args():
     parser.add_argument("--config_deepsort", type=str, default="./configs/deep_sort.yaml")
     parser.add_argument("--ignore_display", dest="display", action="store_false", default=True)
     parser.add_argument("--short_test", dest="short", action="store_true", default=False)
+    parser.add_argument("--sport", dest="use_sport_detector", action="store_true", default=False)
     parser.add_argument("--frame_interval", type=int, default=1)
     parser.add_argument("--display_width", type=int, default=800)
     parser.add_argument("--display_height", type=int, default=600)
