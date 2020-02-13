@@ -3,5 +3,5 @@ YOLOV3:
   WEIGHT: "./detector/YOLOv3_Sport/weights/yolov3_sport_606.weights"
   CLASS_NAMES: "./detector/YOLOv3/cfg/sport.names"
 
-  SCORE_THRESH: 0.5
+  SCORE_THRESH: 0.95
   NMS_THRESH: 0.4
